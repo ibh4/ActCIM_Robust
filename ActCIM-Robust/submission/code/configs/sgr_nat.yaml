@@ -1,0 +1,80 @@
+project: ActCIM-Robust
+dataset: cifar10
+model: resnet18_cifar
+num_classes: 10
+device: cuda
+
+data:
+  root: data
+  batch_size: 128
+  num_workers: 4
+  pin_memory: true
+  persistent_workers: true
+  train_subset: null
+  val_subset: null
+  test_subset: null
+
+optimizer:
+  type: sgd
+  lr: 0.01
+  momentum: 0.9
+  weight_decay: 0.0005
+  nesterov: true
+
+scheduler:
+  type: cosine
+  warmup_epochs: 1
+
+training:
+  epochs: 15
+  label_smoothing: 0.0
+  use_amp: true
+  grad_clip: 0.0
+  patience: 10
+  metric_attr: val_acc
+  lambda_cons: 0.5
+  clean_ce_weight: 0.25
+  cons_temperature: 2.0
+  detach_clean: true
+
+nonlinearity:
+  enabled: true
+  normalization_scope: per_tensor
+  injection_mode: sensitivity_guided
+  alpha_mode: curriculum
+
+nat:
+  method: sgr_nat
+  finetune_from_checkpoint: null
+  scratch: false
+  sensitivity_source: null
+  sensitivity_gamma: 1.0
+  p_min: 0.15
+  p_max: 1.0
+  alpha_abs_min: 0.2
+  alpha_abs_max: 0.6
+  alpha_beta: 1.0
+  curriculum:
+    enabled: true
+    alpha_start: 0.1
+    alpha_end: 0.6
+    power: 1.0
+    warmup_epochs: 0
+  probability:
+    p_min: 0.15
+    p_max: 1.0
+    gamma: 1.0
+  consistency:
+    enabled: true
+    lambda: 0.5
+    temperature: 2.0
+    detach_clean_teacher: true
+    clean_ce_weight: 0.25
+
+sensitivity:
+  source: config
+  default_score: 0.5
+
+reproducibility:
+  deterministic: true
+  benchmark: false

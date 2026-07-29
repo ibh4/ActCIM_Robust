@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>存算一体芯片中非线性误差对推理精度的影响研究 · ActCIM-Robust</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ 顶部导航 ============ -->
+<header class="topbar">
+  <div class="brand">ActCIM-Robust</div>
+  <nav class="toc" id="toc"></nav>
+  <div class="pager"><span id="pageNow">1</span> / <span id="pageTotal">14</span></div>
+</header>
+<div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+
+<main id="deck">
+
+<!-- ============ S1 封面 ============ -->
+<section class="slide cover" data-title="封面">
+  <div class="cover-inner">
+    <div class="cover-tag">赛题研究汇报 · 演示材料</div>
+    <h1>存算一体芯片中非线性误差<br>对推理精度的影响研究</h1>
+    <p class="cover-sub">ActCIM-Robust：激活非线性建模 · 敏感性分析 · 非线性感知训练 · 鲁棒性增强</p>
+    <div class="cover-metrics">
+      <div class="metric"><div class="m-num">81.25% <span class="arrow">→</span> 91.79%</div><div class="m-label">最差准确率（α=+0.8）</div></div>
+      <div class="metric"><div class="m-num">0.9283 <span class="arrow">→</span> 0.9374</div><div class="m-label">AURC 鲁棒性面积</div></div>
+      <div class="metric"><div class="m-num">94.02%</div><div class="m-label">Clean Accuracy 保持</div></div>
+    </div>
+    <p class="cover-note">CIFAR-10 / ResNet-18 · 全部数值可由 CSV / 日志 / checkpoint 追溯 · 附结果审计说明</p>
+    <div class="cover-hint">按 → 或 空格 翻页，← 返回，F 全屏</div>
+  </div>
+</section>
+
+<!-- ============ S2 赛题背景 ============ -->
+<section class="slide" data-title="赛题背景">
+  <h2><span class="s-num">01</span>赛题背景：存储墙与存算一体</h2>
+  <div class="conclusion">核心问题：模拟存算的乘累加呈输入相关的<b>非线性响应</b>，精度退化不可控，需要算法侧增强容忍能力。</div>
+  <div class="cols">
+    <div class="col">
+      <ul class="bullets">
+        <li><b>存储墙瓶颈</b>：冯诺依曼架构下数据在存储与计算单元间频繁搬运，能效与带宽受限</li>
+        <li><b>存算一体（CIM）</b>：把乘累加下沉到存储器件内部，规避搬运开销，能效比数量级提升</li>
+        <li><b>代价</b>：模拟器件受输入幅度、温度漂移、工艺偏差干扰 → 乘累加呈<b>非理想非线性</b></li>
+        <li><b>赛题目标</b>：分析非线性误差影响（任务1）、非线性感知训练（任务2）、鲁棒性增强方法（任务3）</li>
+      </ul>
+      <div class="chip-row">
+        <span class="chip">任务1 敏感性分析 20分</span>
+        <span class="chip">任务2 NAT 训练 20分</span>
+        <span class="chip">任务3 优化创新 20分</span>
+        <span class="chip">拓展研究 10分</span>
+        <span class="chip">技术路线 10分</span>
+        <span class="chip">技术报告 20分</span>
+      </div>
+    </div>
+    <div class="col fig-col">
+      <div class="wall-diagram">
+        <div class="wd-box wd-cpu">计算单元<br><small>ALU / MAC</small></div>
+        <div class="wd-wall">存<br>储<br>墙</div>
+        <div class="wd-box wd-mem">存储单元<br><small>DRAM / SRAM</small></div>
+        <div class="wd-arrow">⇄ 频繁数据搬运：能耗 &gt;60% 消耗在搬运</div>
+        <div class="wd-vs">VS</div>
+        <div class="wd-cim">存算一体阵列：计算在存储原位完成<br><small>但模拟链路引入非线性失真 →</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S3 非线性误差建模 ============ -->
+<section class="slide" data-title="非线性建模">
+  <h2><span class="s-num">02</span>非线性误差建模：三次多项式映射</h2>
+  <div class="conclusion">单参数 α 统一刻画失真的<b>强度与方向</b>：α&gt;0 压缩正区响应，α&lt;0 反之；α=0 退化为理想线性。</div>
+  <div class="cols">
+    <div class="col">
+      <div class="formula-box">
+        <div class="formula">f<sub>α</sub>(x) = m · [ α·(x/m)<sup>3</sup> + (1−α)·(x/m) ]</div>
+        <div class="formula-note">m = max|x|（逐张量动态归一化）， α ∈ [−0.8, +0.8]</div>
+      </div>
+      <pre class="code"><code><span class="kw">def</span> <span class="fn">nonlinearity</span>(x, alpha=0.0):
+    max_val = x.abs().max()
+    x = x / max_val
+    y = alpha * (x**3) + (1 - alpha) * x
+    <span class="kw">return</span> y * max_val</code></pre>
+      <ul class="bullets small">
+        <li><b>端点不动</b>：|x|=m 处输出不变，失真集中于中小幅值区</li>
+        <li><b>小信号增益 1−α</b>：α&gt;0 压缩（增益&lt;1），α&lt;0 扩张（增益&gt;1）</li>
+        <li><b>处处可导</b>：训练期可直接解析反传，无需 STE</li>
+        <li>注入位置：算子<b>输入端</b> y = W·f<sub>α</sub>(x) + b（linear / conv2d / convtranspose2d）</li>
+      </ul>
+    </div>
+    <div class="col fig-col">
+      <img src="assets/fig02_nonlinearity.png" alt="非线性函数及正负Alpha响应" class="fig">
+      <div class="fig-cap">图2：传输函数与增益响应（按源码真实绘制）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S4 技术路线 ============ -->
+<section class="slide" data-title="技术路线">
+  <h2><span class="s-num">03</span>技术路线总览</h2>
+  <div class="conclusion">基线训练 → 非线性注入框架 → 三种 NAT 策略微调 → 统一 11 点 α-Sweep 可追溯评估。</div>
+  <div class="cols">
+    <div class="col narrow">
+      <ul class="bullets">
+        <li><b>数据/模型</b>：CIFAR-10（45k/5k/10k），ResNet-18-CIFAR（11.18M 参数）</li>
+        <li><b>基线</b>：50 epoch，val acc 94.84%（seed 42）</li>
+        <li><b>注入框架</b>：可插拔 wrapper + 控制器，逐层/全局 α 可控</li>
+        <li><b>评估协议</b>：α ∈ [−0.8, +0.8] 共 11 点 × 10000 张全测试集</li>
+        <li><b>指标</b>：Worst-Case Acc · AURC（梯形积分归一化）· 方向不对称 Gap · ECE</li>
+      </ul>
+    </div>
+    <div class="col wide fig-col">
+      <img src="assets/fig01_pipeline.png" alt="方法总体流程图" class="fig">
+      <div class="fig-cap">图1：ActCIM-Robust 总体流程（实际生效 4 个深层，见审计页）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S5 任务1a 敏感性分析 ============ -->
+<section class="slide" data-title="任务1·敏感性">
+  <h2><span class="s-num">04</span>任务1 · 敏感性分析：整网精度衰减趋势</h2>
+  <div class="conclusion">方向高度不对称：正 α 压缩是主导失效方向 —— 基线 α=+0.8 跌至 <b>81.25%</b>，α=−0.8 仍有 <b>93.66%</b>。</div>
+  <div class="cols">
+    <div class="col narrow">
+      <ul class="bullets">
+        <li>11 点全区间扫描：负半轴几乎平坦，正半轴 α≥+0.6 后陡降</li>
+        <li>方向不对称差 <b>−3.14 pp</b>（正侧均值低于负侧）</li>
+        <li><b>机理</b>：压缩把中小幅值激活增益压至 1−α，判别信息被系统性抹除</li>
+        <li>扩张（α&lt;0）扰动幅度更大但<b>保序性好</b>，对 argmax 决策破坏小</li>
+      </ul>
+      <table class="mini-table">
+        <tr><th>α</th><th>−0.8</th><th>0</th><th>+0.6</th><th>+0.8</th></tr>
+        <tr><td>基线 Acc</td><td>93.66%</td><td>94.23%</td><td>91.13%</td><td class="bad">81.25%</td></tr>
+      </table>
+    </div>
+    <div class="col wide fig-col">
+      <img src="assets/fig03_alpha_sweep.png" alt="四种方法Accuracy-Alpha曲线" class="fig">
+      <div class="fig-cap">图3：Accuracy–α 曲线（10000 张全测试集，checkpoint 已复评核验）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S6 任务1b 逐层累积 ============ -->
+<section class="slide" data-title="任务1·逐层累积">
+  <h2><span class="s-num">05</span>任务1 · 误差的逐层累积行为</h2>
+  <div class="conclusion">非线性误差沿深度<b>逐级放大</b>：自 layer4.0.downsample.0 起相对 L2 误差 0.386 → fc 输入处高达 0.978。</div>
+  <div class="cols">
+    <div class="col narrow">
+      <ul class="bullets">
+        <li>activation hook 逐层对比扰动前后输出（全局 α=±0.4，128 样本批）</li>
+        <li>误差跳升路径：downsample 0.386 → conv1 0.531 → conv2 0.843 → fc 0.978（−α）</li>
+        <li>负 α 激活扰动幅度<b>大于</b>正 α（fc 处标准差比 1.97 vs 0.41）却损失更小</li>
+        <li>fc 输入处正 α 符号翻转率 10.2%（负 α 仅 3.4%）→ 佐证"压缩破坏判别信息"机理</li>
+        <li>层敏感性排序实验因命名碰撞 + 128 样本分辨率（0.78pp）退化，<b>如实呈现、不作为证据</b></li>
+      </ul>
+    </div>
+    <div class="col wide fig-col">
+      <img src="assets/fig05_error_accumulation.png" alt="误差逐层累积图" class="fig">
+      <div class="fig-cap">图5：各层输出激活相对干净前向的相对 L2 误差（按深度排序）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S7 任务2 NAT ============ -->
+<section class="slide" data-title="任务2·NAT">
+  <h2><span class="s-num">06</span>任务2 · 非线性感知训练（NAT）</h2>
+  <div class="conclusion">三种策略均从基线 checkpoint 微调；Random/SGR 的最佳验证点停在 <b>epoch 0</b>，训练信号被随机化稀释。</div>
+  <div class="method-cards">
+    <div class="mcard">
+      <div class="mc-head fixed">Fixed-NAT</div>
+      <ul><li>训练全程固定 α = <b>+0.4</b></li><li>直接对齐"最危险方向的中等强度"工作点</li><li>best epoch 9 · val 94.90%</li></ul>
+    </div>
+    <div class="mcard">
+      <div class="mc-head random">Random-NAT</div>
+      <ul><li>每 batch 采样 α ~ <b>U(−0.5, +0.5)</b> 全局注入</li><li>期望 α=0，多数 batch 处于低失真区</li><li>best epoch 0 · val 94.82%</li></ul>
+    </div>
+    <div class="mcard">
+      <div class="mc-head sgr">SGR-NAT</div>
+      <ul><li>灵敏度引导逐层概率注入 + 课程 α 调度</li><li>损失 = 扰动 CE + 0.25×干净 CE + KL 一致性（λ=0.5, T=2）</li><li>best epoch 0 · val 94.68%</li></ul>
+    </div>
+  </div>
+  <ul class="bullets small center-block">
+    <li><b>收敛性</b>：Fixed-NAT 5 分钟内收敛且确实学到新表征；Random/SGR 微调 11 epoch 早停、几乎未超过初始点</li>
+    <li><b>微调 vs 从头训练</b>：微调以极小代价（0.21pp Clean）继承基线泛化能力，是本场景下的高效路径</li>
+  </ul>
+</section>
+
+<!-- ============ S8 任务3 核心结果 ============ -->
+<section class="slide" data-title="任务3·核心结果">
+  <h2><span class="s-num">07</span>任务3 · 鲁棒性增强：Fixed-NAT 核心结果</h2>
+  <div class="conclusion">以 <b>0.21 pp</b> 干净精度代价，最差准确率 <b>+10.54 pp</b>（81.25%→91.79%），AURC 0.9283→0.9374。</div>
+  <div class="cols">
+    <div class="col narrow">
+      <table class="result-table">
+        <tr><th>方法</th><th>Worst Acc</th><th>AURC</th><th>α=0</th></tr>
+        <tr><td>Clean 基线</td><td>81.25%</td><td>0.9283</td><td>94.23%</td></tr>
+        <tr><td>Random-NAT</td><td>81.30%</td><td>0.9281</td><td>94.25%</td></tr>
+        <tr><td>SGR-NAT</td><td>82.06%</td><td>0.9290</td><td>94.28%</td></tr>
+        <tr class="hl"><td>Fixed-NAT(+0.4)</td><td><b>91.79%</b></td><td><b>0.9374</b></td><td>94.02%</td></tr>
+      </table>
+      <ul class="bullets small">
+        <li>AURC⁺（正半轴）0.9128 → <b>0.9382</b>；负半轴仅轻微让步（0.9399→0.9357）</li>
+        <li>方向不对称差 −0.0314 → <b>+0.0007</b>：正负风险对齐</li>
+        <li>曲线峰值移到 α=+0.4（94.27%）＝训练-部署工作点对齐</li>
+      </ul>
+    </div>
+    <div class="col wide fig-col">
+      <img src="assets/fig06_worst_accuracy.png" alt="Worst Accuracy对比" class="fig">
+      <div class="fig-cap">图6：四方法最差准确率对比（均出现在 α=+0.8）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S9 权衡分析 ============ -->
+<section class="slide" data-title="权衡分析">
+  <h2><span class="s-num">08</span>Clean Accuracy – AURC 权衡</h2>
+  <div class="conclusion">Fixed-NAT 位于权衡前沿：鲁棒性收益远大于微小的干净精度损失；Random/SGR 停留在基线附近。</div>
+  <div class="cols">
+    <div class="col narrow">
+      <ul class="bullets">
+        <li>横轴：α=0 干净准确率；纵轴：AURC（全区间平均鲁棒性）</li>
+        <li>Fixed-NAT：右上移动 —— Clean −0.21pp 换 AURC +0.0091</li>
+        <li>Random-NAT / SGR-NAT 与基线的全部指标差异都在<b>千分位</b>量级</li>
+        <li><b>结论</b>：在部署失真方向明确且近似恒定时，训练预算应集中于该方向的单一工作点，而非摊薄到随机区间</li>
+      </ul>
+    </div>
+    <div class="col wide fig-col">
+      <img src="assets/fig07_tradeoff.png" alt="Clean-AURC权衡图" class="fig">
+      <div class="fig-cap">图7：Clean Accuracy 与 AURC 的权衡视图</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S10 拓展·校准 ============ -->
+<section class="slide" data-title="拓展·校准">
+  <h2><span class="s-num">09</span>拓展研究 · 置信度校准分析</h2>
+  <div class="conclusion">强正 α 引发<b>置信度崩溃型欠自信</b>（conf 0.25 / acc 81%）——与常见"过自信"方向相反；Fixed-NAT 显著缓解。</div>
+  <div class="cols">
+    <div class="col narrow">
+      <ul class="bullets">
+        <li>α=+0.8（clean）：平均置信度崩至 <b>0.252</b>，准确率 81.25%，ECE 0.560</li>
+        <li>压缩使 logit 幅值整体缩小 → softmax 趋于均匀 → 模型"不敢确定"</li>
+        <li>负 α 侧仅轻度过自信（conf≈0.99，ECE 0.05–0.07）</li>
+        <li>Fixed-NAT：conf 回升至 0.482，ECE 降至 <b>0.436</b>；训练点 α=+0.4 处 ECE 仅 0.028</li>
+        <li><b>安全含义</b>：欠自信方向对拒识/降级决策保守，但强失真区仍需温度缩放等后校准</li>
+      </ul>
+    </div>
+    <div class="col wide fig-col">
+      <img src="assets/fig09_reliability.png" alt="可靠性图" class="fig">
+      <div class="fig-cap">图9：15-bin 可靠性图（柱体高于对角线 = 欠自信）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S11 拓展·ECE曲线 ============ -->
+<section class="slide" data-title="拓展·ECE">
+  <h2><span class="s-num">10</span>拓展研究 · ECE–α 全景与消融</h2>
+  <div class="conclusion">训练期 α 分布是决定因素：恒定 +0.4 全面优于随机化分布 —— 确定性方向失真 ≠ 零均值噪声。</div>
+  <div class="cols">
+    <div class="col narrow">
+      <table class="result-table">
+        <tr><th>训练 α 分布</th><th>Worst</th><th>AURC</th></tr>
+        <tr><td>无（基线）</td><td>81.25%</td><td>0.9283</td></tr>
+        <tr><td>U(−0.5,+0.5) 全局</td><td>81.30%</td><td>0.9281</td></tr>
+        <tr><td>灵敏度引导逐层</td><td>82.06%</td><td>0.9290</td></tr>
+        <tr class="hl"><td>恒定 +0.4</td><td><b>91.79%</b></td><td><b>0.9374</b></td></tr>
+      </table>
+      <ul class="bullets small">
+        <li>随机注入期望为 0，训练信号被稀释（best_epoch=0 互证）</li>
+        <li>与"高斯噪声注入普遍有效"的直觉相反：本扰动是<b>确定性方向性失真</b></li>
+      </ul>
+    </div>
+    <div class="col wide fig-col">
+      <img src="assets/fig08_ece_alpha.png" alt="ECE-Alpha曲线" class="fig">
+      <div class="fig-cap">图8：四方法 15-bin ECE 随 α 的变化</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S12 审计与可追溯性 ============ -->
+<section class="slide" data-title="结果审计">
+  <h2><span class="s-num">11</span>结果审计与可追溯性</h2>
+  <div class="conclusion">每个数字可回溯到唯一 CSV 行与 checkpoint；审计实证锁定头条数字来自 <b>seed 42</b>，并限定扰动口径。</div>
+  <div class="cols">
+    <div class="col">
+      <ul class="bullets">
+        <li><b>seed 口径定论</b>：4 个 checkpoint 全测试集复评，α=0 指纹（0.9402）唯一匹配 seed 42 → 解决"推荐模型 seed 2026 vs 推荐路径 seed 42"不一致</li>
+        <li><b>注入范围实证</b>：控制器命名碰撞使实际生效层为深层 4 层（4/21），训练评估同口径 → 对比公平，结论限定为"深层非线性扰动模型"</li>
+        <li><b>多种子表述</b>：Fixed-NAT 三种子 Worst 91.36%–91.79%（描述性一致）；对比方法单种子，<b>不宣称统计显著性</b></li>
+        <li><b>校准方向更正</b>：由"过自信"更正为置信度崩溃型欠自信（signed gap 全为负）</li>
+      </ul>
+    </div>
+    <div class="col fig-col">
+      <img src="assets/fig10_multiseed.png" alt="多种子一致性" class="fig">
+      <div class="fig-cap">图10：Fixed-NAT 三个训练种子的完整 α-Sweep（描述性一致性）</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S13 结论 ============ -->
+<section class="slide" data-title="结论">
+  <h2><span class="s-num">12</span>结论与局限性</h2>
+  <div class="conclusion">深层激活非线性下，Fixed-NAT 是唯一实质有效的策略；全部结论限定于已实证的扰动口径。</div>
+  <div class="cols">
+    <div class="col">
+      <div class="concl-block good">
+        <h3>三大结论</h3>
+        <ol>
+          <li>正 α 压缩为主导失效方向，根源是<b>判别信息破坏</b>而非扰动幅度</li>
+          <li>Fixed-NAT(+0.4)：Worst <b>+10.54pp</b>、AURC <b>0.9374</b>、Clean <b>94.02%</b>，全面优于 Random/SGR</li>
+          <li>强压缩引发欠自信崩溃，Fixed-NAT 将 ECE 0.560 → <b>0.436</b></li>
+        </ol>
+      </div>
+    </div>
+    <div class="col">
+      <div class="concl-block warn">
+        <h3>局限与后续工作</h3>
+        <ol>
+          <li>注入范围为深层 4 层（4/21），全层注入需修复命名碰撞后复验</li>
+          <li>除 Fixed-NAT（n=3 描述性）外单训练种子，无显著性检验</li>
+          <li>仅 CIFAR-10 / ResNet-18 / 单一非线性族；未耦合量化误差与器件噪声</li>
+          <li>后续：真全层注入 · 多种子重复 · 真实 CIM 硬件在环验证</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ S14 交付物 ============ -->
+<section class="slide" data-title="交付物">
+  <h2><span class="s-num">13</span>交付物与评分对应</h2>
+  <div class="conclusion">论文（MD/DOCX/PDF）+ 12 页 PPT + 10 张 300DPI 图 + BibTeX + 审计说明，全流程脚本可一键复现。</div>
+  <div class="cols">
+    <div class="col">
+      <table class="result-table deliver">
+        <tr><th>交付物</th><th>位置</th></tr>
+        <tr><td>设计报告（20页 PDF + DOCX + MD）</td><td>reports/final/ActCIM_Robust_paper_final.*</td></tr>
+        <tr><td>介绍 PPT（12 页可编辑）</td><td>reports/final/ActCIM_Robust_slides.pptx</td></tr>
+        <tr><td>论文级图片（10 张 ×PNG+PDF）</td><td>results/figures/paper_final/</td></tr>
+        <tr><td>参考文献（18 条 BibTeX）</td><td>reports/final/references.bib</td></tr>
+        <tr><td>结果审计说明</td><td>reports/final/result_audit_statement.md</td></tr>
+      </table>
+    </div>
+    <div class="col">
+      <table class="result-table deliver">
+        <tr><th>评分模块</th><th>本项目覆盖</th></tr>
+        <tr><td>任务1 敏感性分析（20）</td><td>11 点 sweep · 方向不对称 · 逐层累积</td></tr>
+        <tr><td>任务2 NAT 分析（20）</td><td>三策略对比 · 收敛性 · 微调路径</td></tr>
+        <tr><td>任务3 优化创新（20）</td><td>Fixed-NAT 工作点对齐 +10.54pp</td></tr>
+        <tr><td>拓展研究（10）</td><td>校准分析 · 随机 vs 确定性失真机制</td></tr>
+        <tr><td>技术路线 / 报告（30）</td><td>可追溯协议 + 完整审计链</td></tr>
+      </table>
+    </div>
+  </div>
+  <p class="thanks">谢谢观看 · ActCIM-Robust</p>
+</section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

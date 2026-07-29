@@ -1,0 +1,25 @@
+extends: base
+model: resnet18_cifar
+training:
+  epochs: 15
+  label_smoothing: 0.0
+  amp: true
+optimizer:
+  learning_rate: 0.01
+  momentum: 0.9
+  weight_decay: 0.0005
+scheduler:
+  type: cosine
+  warmup_epochs: 1
+nonlinearity:
+  enabled: true
+  alpha: 0.4
+  normalization_scope: per_tensor
+  injection_mode: all_layers
+  alpha_mode: fixed
+nat:
+  method: fixed_nat
+  finetune_from_checkpoint: null
+reproducibility:
+  deterministic: true
+  benchmark: false

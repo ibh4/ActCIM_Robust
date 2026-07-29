@@ -1,0 +1,27 @@
+# ---- 系统与IDE ----
+.DS_Store
+.qoder/
+extract.log
+
+# ---- 压缩包与大文件 ----
+*.rar
+*.zip
+
+# ---- 模型checkpoint（85MB/个，请见 README 获取方式）----
+*.pt
+*.pth
+
+# ---- 数据集原始文件（CIFAR-10 请自行下载）----
+ActCIM-Robust/data/raw/
+
+# ---- Python ----
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+# ---- 临时目录 ----
+.tmp_*/
+web_presentation/.tmp_export/

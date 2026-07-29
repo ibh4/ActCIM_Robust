@@ -1,0 +1,52 @@
+project: ActCIM-Robust
+dataset: cifar10
+model: resnet18_cifar
+num_classes: 10
+device: cuda
+
+data:
+  root: data
+  batch_size: 128
+  num_workers: 4
+  pin_memory: true
+  persistent_workers: true
+  train_subset: null
+  val_subset: null
+  test_subset: null
+
+optimizer:
+  type: sgd
+  learning_rate: 0.1
+  momentum: 0.9
+  weight_decay: 0.0005
+  nesterov: false
+
+scheduler:
+  type: cosine
+  warmup_epochs: 3
+  min_lr: 0.0
+
+training:
+  epochs: 50
+  label_smoothing: 0.0
+  amp: true
+  gradient_clip_norm: null
+  early_stopping_patience: 15
+  checkpoint_frequency: 5
+
+nonlinearity:
+  enabled: false
+  alpha: 0.0
+  normalization_scope: per_tensor
+  injection_mode: all_layers
+  alpha_mode: fixed
+  target_layers: null
+
+reproducibility:
+  deterministic: false
+  benchmark: true
+
+logging:
+  level: INFO
+  progress_frequency: 10
+  tensorboard: false

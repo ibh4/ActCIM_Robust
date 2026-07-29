@@ -1,0 +1,12 @@
+extends: base
+model: resnet18_cifar
+data:
+  batch_size: 256
+  num_workers: 4
+nonlinearity:
+  enabled: true
+  normalization_scope: per_tensor
+  injection_mode: single_layer
+  alpha_mode: fixed
+sensitivity:
+  alphas: [-0.4, 0.4]

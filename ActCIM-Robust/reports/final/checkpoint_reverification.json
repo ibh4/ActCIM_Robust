@@ -1,0 +1,54 @@
+{
+  "expected_from_csv": {
+    "baseline_seed_42": {
+      "0.0": 0.9423,
+      "0.8": 0.8125
+    },
+    "fixed_nat_seed_42": {
+      "0.0": null,
+      "0.8": null
+    },
+    "fixed_nat_seed_2026": {
+      "0.0": 0.9429,
+      "0.8": 0.9136
+    },
+    "fixed_nat_seed_3407": {
+      "0.0": 0.9423,
+      "0.8": 0.916
+    }
+  },
+  "reproduced": {
+    "baseline_seed_42": {
+      "ckpt_epoch": 48,
+      "ckpt_val_acc": null,
+      "acc_alpha_0.0": 0.9423,
+      "sec_alpha_0.0": 64.4,
+      "acc_alpha_0.8": 0.8102,
+      "sec_alpha_0.8": 65.8
+    },
+    "fixed_nat_seed_42": {
+      "ckpt_epoch": 9,
+      "ckpt_val_acc": null,
+      "acc_alpha_0.0": 0.9402,
+      "sec_alpha_0.0": 64.7,
+      "acc_alpha_0.8": 0.9169,
+      "sec_alpha_0.8": 64.9
+    },
+    "fixed_nat_seed_2026": {
+      "ckpt_epoch": 9,
+      "ckpt_val_acc": null,
+      "acc_alpha_0.0": 0.9429,
+      "sec_alpha_0.0": 61.9,
+      "acc_alpha_0.8": 0.9131,
+      "sec_alpha_0.8": 62.9
+    },
+    "fixed_nat_seed_3407": {
+      "ckpt_epoch": 9,
+      "ckpt_val_acc": null,
+      "acc_alpha_0.0": 0.9423,
+      "sec_alpha_0.0": 65.2,
+      "acc_alpha_0.8": 0.9156,
+      "sec_alpha_0.8": 61.9
+    }
+  }
+}

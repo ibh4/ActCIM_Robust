@@ -1,0 +1,11 @@
+extends: base
+model: resnet18_cifar
+data:
+  batch_size: 128
+  num_workers: 0
+nonlinearity:
+  enabled: true
+  normalization_scope: per_tensor
+error_accumulation:
+  alphas: [-0.4, 0.4]
+  num_batches: 1

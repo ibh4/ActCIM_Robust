@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "actcim-robust"
+version = "1.0.0"
+description = "Sensitivity-Guided Randomized Nonlinearity-Aware Training for Computing-in-Memory Neural Networks"
+authors = [{name = "ActCIM-Robust Team"}]
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "scipy>=1.10.0",
+    "scikit-learn>=1.3.0",
+    "matplotlib>=3.7.0",
+    "PyYAML>=6.0",
+    "tqdm>=4.65.0",
+    "tensorboard>=2.13.0",
+    "psutil>=5.9.0",
+]
+
+[project.scripts]
+actcim = "actcim_robust.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4.0"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["smoke: smoke tests"]
