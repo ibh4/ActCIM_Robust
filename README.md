@@ -71,7 +71,7 @@ flowchart LR
 
     subgraph N[非线性感知训练 NAT]
         FIX[Fixed-NAT<br/>α=+0.4 固定]:::nat
-        RND[Random-NAT<br/>α~U(-0.5,+0.5)]:::nat
+        RND["Random-NAT<br/>α~U(-0.5,+0.5)"]:::nat
         SGR[SGR-NAT<br/>敏感度引导 + KL]:::nat
     end
 
@@ -157,7 +157,7 @@ flowchart TB
         F3[epoch 9 达最佳<br/>确实学到新表征]:::fix
     end
     subgraph RND[Random-NAT]
-        R1[每 batch α~U(-0.5,+0.5)]:::rnd
+        R1["每 batch α~U(-0.5,+0.5)"]:::rnd
         R2[epoch 0 即最佳<br/>训练信号被稀释]:::rnd
     end
     subgraph SGR[SGR-NAT]
