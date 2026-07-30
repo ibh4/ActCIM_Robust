@@ -56,7 +56,7 @@
 ## 3. 总体技术路线：从基线到可审计鲁棒性
 
 ```mermaid
-%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Inter, Microsoft YaHei, sans-serif", "background": "#0B1020", "primaryColor": "#172554", "primaryTextColor": "#F8FAFC", "primaryBorderColor": "#38BDF8", "lineColor": "#94A3B8"}}}%%
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Inter, Microsoft YaHei, sans-serif", "background": "#020617", "primaryTextColor": "#F8FAFC", "lineColor": "#CBD5E1"}}}%%
 flowchart LR
     D([CIFAR-10<br/>4.5万 训练 / 5千 验证 / 1万 测试]):::data
 
@@ -96,12 +96,12 @@ flowchart LR
     SWEEP --> METRIC
     METRIC --> AUDIT
 
-    classDef data fill:#F97316,stroke:#FED7AA,color:#111827,stroke-width:2px;
-    classDef base fill:#2563EB,stroke:#BFDBFE,color:#FFFFFF,stroke-width:2px;
-    classDef inj fill:#10B981,stroke:#A7F3D0,color:#052E16,stroke-width:2px;
-    classDef nat fill:#EC4899,stroke:#FBCFE8,color:#FFFFFF,stroke-width:2px;
-    classDef eval fill:#8B5CF6,stroke:#EDE9FE,color:#FFFFFF,stroke-width:2px;
-    classDef audit fill:#EAB308,stroke:#FEF3C7,color:#111827,stroke-width:3px;
+    classDef data fill:#3B82F6,stroke:#DBEAFE,color:#FFFFFF,stroke-width:2px;
+    classDef base fill:#2563EB,stroke:#BFDBFE,color:#FFFFFF,stroke-width:3px;
+    classDef inj fill:#22C55E,stroke:#BBF7D0,color:#052E16,stroke-width:2px;
+    classDef nat fill:#EF4444,stroke:#FECACA,color:#FFFFFF,stroke-width:2px;
+    classDef eval fill:#3B82F6,stroke:#DBEAFE,color:#FFFFFF,stroke-width:2px;
+    classDef audit fill:#2563EB,stroke:#BFDBFE,color:#FFFFFF,stroke-width:3px;
 ```
 
 <p align="center">
