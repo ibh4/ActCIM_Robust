@@ -1,0 +1,354 @@
+{
+  "audit_metadata": {
+    "date": "2026-07-29",
+    "project": "ActCIM-Robust",
+    "project_root": "I:/比赛项目/存算一体高校挑战赛/ActCIM-Robust"
+  },
+  "environment": {
+    "python_version": "3.12.5",
+    "python_full": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+    "torch_version": "2.5.1+cu121",
+    "cuda_available": true,
+    "cuda_version": "12.1",
+    "gpu_name": "NVIDIA GeForce RTX 4060",
+    "gpu_memory_gb": 8.585216,
+    "cpu_name": "Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz",
+    "total_ram": "31.90 GB",
+    "os": "Windows 11",
+    "hostname": "WIN-2SJ7ERJE706"
+  },
+  "file_counts": {
+    "py_source": 60,
+    "yaml_configs": 10,
+    "pt_checkpoints": 6,
+    "pth_checkpoints": 0,
+    "csv_results": 4,
+    "json_results": 10,
+    "jsonl_metrics": 3,
+    "png_figures": 15,
+    "pdf_figures": 15,
+    "md_reports": 5,
+    "ps1_scripts": 8,
+    "npy_splits": 2
+  },
+  "yaml_configs": [
+    "configs/base.yaml",
+    "configs/baseline_full.yaml",
+    "configs/baseline_fast.yaml",
+    "configs/sgr_nat.yaml",
+    "configs/random_nat.yaml",
+    "configs/fixed_nat.yaml",
+    "configs/smoke.yaml",
+    "configs/error_accumulation.yaml",
+    "configs/layer_sensitivity.yaml",
+    "configs/alpha_sweep.yaml"
+  ],
+  "checkpoints": [
+    {
+      "method": "baseline",
+      "path": "results/baseline/seed_42/last.pt",
+      "file_size_bytes": 89489730,
+      "sha256": "e450cc6be59edf45dcf6b87ed9c3b45d7d7731dfaafaafae75cde6cc77e9b048",
+      "epoch": 49,
+      "validation_accuracy": null,
+      "model_architecture": "resnet18_cifar",
+      "parameter_count": 11183582,
+      "seed": 42,
+      "load_status": "success",
+      "checkpoint_keys": ["epoch", "model_state_dict", "metrics", "optimizer_state_dict", "scheduler_state_dict"]
+    },
+    {
+      "method": "baseline",
+      "path": "results/baseline/seed_42/best.pt",
+      "file_size_bytes": 89489730,
+      "sha256": "da4a9a01152d9a9e2255ca27bdc98de7b598d874b0454df25ba3e0f426f5140b",
+      "epoch": 48,
+      "validation_accuracy": 94.84,
+      "model_architecture": "resnet18_cifar",
+      "parameter_count": 11183582,
+      "seed": 42,
+      "load_status": "success",
+      "checkpoint_keys": ["epoch", "model_state_dict", "metrics", "optimizer_state_dict", "scheduler_state_dict"]
+    },
+    {
+      "method": "sgr_nat",
+      "path": "results/sgr_nat/sgr_nat/seed_42/last.pt",
+      "file_size_bytes": 89489794,
+      "sha256": "0691a1a555e385b2e1bb6b02c8939a57ced11d1bebf1d742a5e03c29750dab2f",
+      "epoch": 10,
+      "validation_accuracy": null,
+      "model_architecture": "resnet18_cifar",
+      "parameter_count": 11183582,
+      "seed": 42,
+      "load_status": "success",
+      "checkpoint_keys": ["epoch", "model_state_dict", "metrics", "optimizer_state_dict", "scheduler_state_dict"]
+    },
+    {
+      "method": "sgr_nat",
+      "path": "results/sgr_nat/sgr_nat/seed_42/best.pt",
+      "file_size_bytes": 89489794,
+      "sha256": "6e29b333d9bf9845e249ae309dbaebdc4a38c5ede7aefed0a8e48ff0ef7425a6",
+      "epoch": 0,
+      "validation_accuracy": 94.68,
+      "model_architecture": "resnet18_cifar",
+      "parameter_count": 11183582,
+      "seed": 42,
+      "load_status": "success",
+      "checkpoint_keys": ["epoch", "model_state_dict", "metrics", "optimizer_state_dict", "scheduler_state_dict"]
+    },
+    {
+      "method": "random_nat",
+      "path": "results/random_nat/random_nat/seed_42/last.pt",
+      "file_size_bytes": 89489730,
+      "sha256": "49cb043c665e9fe08786cb95f16f47f45c8c8b04e3e3aa956858c98d35a5d925",
+      "epoch": 10,
+      "validation_accuracy": null,
+      "model_architecture": "resnet18_cifar",
+      "parameter_count": 11183582,
+      "seed": 42,
+      "load_status": "success",
+      "checkpoint_keys": ["epoch", "model_state_dict", "metrics", "optimizer_state_dict", "scheduler_state_dict"]
+    },
+    {
+      "method": "random_nat",
+      "path": "results/random_nat/random_nat/seed_42/best.pt",
+      "file_size_bytes": 89489730,
+      "sha256": "79ce3062e8891bc6b787a69b5442fae37fe5b7d0f9cc60236da007e27773f173",
+      "epoch": 0,
+      "validation_accuracy": 94.82,
+      "model_architecture": "resnet18_cifar",
+      "parameter_count": 11183582,
+      "seed": 42,
+      "load_status": "success",
+      "checkpoint_keys": ["epoch", "model_state_dict", "metrics", "optimizer_state_dict", "scheduler_state_dict"]
+    }
+  ],
+  "csv_results": [
+    "results/analysis/layer_error_accumulation.csv",
+    "results/analysis/layer_sensitivity_ranked.csv",
+    "results/analysis/layer_sensitivity.csv",
+    "results/analysis/alpha_sweep.csv"
+  ],
+  "json_results": [
+    "results/baseline/seed_42/summary.json",
+    "results/baseline/seed_42/environment.json",
+    "results/sgr_nat/sgr_nat/seed_42/summary.json",
+    "results/sgr_nat/sgr_nat/seed_42/environment.json",
+    "results/sgr_nat/sgr_nat/seed_42/batch_stats.json",
+    "results/random_nat/random_nat/seed_42/summary.json",
+    "results/random_nat/random_nat/seed_42/environment.json",
+    "results/analysis/layer_error_accumulation.json",
+    "results/analysis/layer_sensitivity.json",
+    "results/analysis/alpha_sweep_summary.json"
+  ],
+  "jsonl_metrics": [
+    "results/baseline/seed_42/metrics.jsonl",
+    "results/sgr_nat/sgr_nat/seed_42/metrics.jsonl",
+    "results/random_nat/random_nat/seed_42/metrics.jsonl"
+  ],
+  "png_figures": [
+    "results/figures/accuracy_drop_vs_alpha.png",
+    "results/figures/accuracy_vs_alpha.png",
+    "results/figures/activation_distribution_shift.png",
+    "results/figures/confidence_vs_alpha.png",
+    "results/figures/ece_vs_alpha.png",
+    "results/figures/layer_cosine_similarity.png",
+    "results/figures/layer_error_accumulation_neg_04.png",
+    "results/figures/layer_error_accumulation_pos_04.png",
+    "results/figures/layer_mean_std_shift.png",
+    "results/figures/layer_sensitivity_bar.png",
+    "results/figures/layer_sensitivity_heatmap.png",
+    "results/figures/loss_vs_alpha.png",
+    "results/figures/positive_negative_layer_gap.png",
+    "results/figures/sensitivity_vs_depth.png",
+    "results/figures/sensitivity_vs_param_count.png"
+  ],
+  "pdf_figures": [
+    "results/figures/accuracy_drop_vs_alpha.pdf",
+    "results/figures/accuracy_vs_alpha.pdf",
+    "results/figures/activation_distribution_shift.pdf",
+    "results/figures/confidence_vs_alpha.pdf",
+    "results/figures/ece_vs_alpha.pdf",
+    "results/figures/layer_cosine_similarity.pdf",
+    "results/figures/layer_error_accumulation_neg_04.pdf",
+    "results/figures/layer_error_accumulation_pos_04.pdf",
+    "results/figures/layer_mean_std_shift.pdf",
+    "results/figures/layer_sensitivity_bar.pdf",
+    "results/figures/layer_sensitivity_heatmap.pdf",
+    "results/figures/loss_vs_alpha.pdf",
+    "results/figures/positive_negative_layer_gap.pdf",
+    "results/figures/sensitivity_vs_depth.pdf",
+    "results/figures/sensitivity_vs_param_count.pdf"
+  ],
+  "figure_files": {
+    "accuracy_drop_vs_alpha.pdf": 11057,
+    "accuracy_drop_vs_alpha.png": 120814,
+    "accuracy_vs_alpha.pdf": 14844,
+    "accuracy_vs_alpha.png": 139746,
+    "activation_distribution_shift.pdf": 19136,
+    "activation_distribution_shift.png": 344847,
+    "confidence_vs_alpha.pdf": 13651,
+    "confidence_vs_alpha.png": 126240,
+    "ece_vs_alpha.pdf": 13759,
+    "ece_vs_alpha.png": 115471,
+    "layer_cosine_similarity.pdf": 16673,
+    "layer_cosine_similarity.png": 263222,
+    "layer_error_accumulation_neg_04.pdf": 15523,
+    "layer_error_accumulation_neg_04.png": 224656,
+    "layer_error_accumulation_pos_04.pdf": 14946,
+    "layer_error_accumulation_pos_04.png": 229169,
+    "layer_mean_std_shift.pdf": 18781,
+    "layer_mean_std_shift.png": 335423,
+    "layer_sensitivity_bar.pdf": 14402,
+    "layer_sensitivity_bar.png": 143321,
+    "layer_sensitivity_heatmap.pdf": 19190,
+    "layer_sensitivity_heatmap.png": 151593,
+    "loss_vs_alpha.pdf": 11727,
+    "loss_vs_alpha.png": 119033,
+    "positive_negative_layer_gap.pdf": 15167,
+    "positive_negative_layer_gap.png": 157118,
+    "sensitivity_vs_depth.pdf": 14314,
+    "sensitivity_vs_depth.png": 122010,
+    "sensitivity_vs_param_count.pdf": 13301,
+    "sensitivity_vs_param_count.png": 104583
+  },
+  "data_status": {
+    "splits": {
+      "cifar10_train_indices.npy": {
+        "path": "data/splits/cifar10_train_indices.npy",
+        "size_bytes": 180128,
+        "shape": [45000],
+        "expected_size": 45000,
+        "valid": true
+      },
+      "cifar10_val_indices.npy": {
+        "path": "data/splits/cifar10_val_indices.npy",
+        "size_bytes": 20128,
+        "shape": [5000],
+        "expected_size": 5000,
+        "valid": true
+      }
+    },
+    "raw_cifar10": {
+      "path": "data/raw/cifar-10-batches-py",
+      "files": {
+        "data_batch_1": {"size_bytes": 31035704, "exists": true},
+        "data_batch_2": {"size_bytes": 31035320, "exists": true},
+        "data_batch_3": {"size_bytes": 31035999, "exists": true},
+        "data_batch_4": {"size_bytes": 31035696, "exists": true},
+        "data_batch_5": {"size_bytes": 31035623, "exists": true},
+        "test_batch": {"size_bytes": 31035526, "exists": true},
+        "batches.meta": {"size_bytes": 158, "exists": true},
+        "readme.html": {"size_bytes": 88, "exists": true}
+      },
+      "all_present": true
+    },
+    "source_archive": {
+      "path": "I:/比赛项目/存算一体高校挑战赛/cifar-10-python.tar.gz",
+      "size_bytes": 170498071,
+      "md5": "c58f30108f718f92721af3b95e74349a",
+      "exists": true
+    }
+  },
+  "training_summaries": {
+    "baseline": {
+      "best_epoch": 48,
+      "best_val_acc": 94.84,
+      "total_epochs": 50,
+      "total_time_seconds": 1435.889,
+      "model": "resnet18_cifar"
+    },
+    "sgr_nat": {
+      "best_epoch": 0,
+      "best_val_acc": 94.68,
+      "total_epochs": 11,
+      "total_time_seconds": 398.970,
+      "model": "resnet18_cifar"
+    },
+    "random_nat": {
+      "best_epoch": 0,
+      "best_val_acc": 94.82,
+      "total_epochs": 11,
+      "total_time_seconds": 331.913,
+      "model": "resnet18_cifar"
+    }
+  },
+  "analysis_results": {
+    "layer_sensitivity": {
+      "clean_accuracy": 0.953125,
+      "n_layers": 21,
+      "max_sensitivity": 0.0078125,
+      "robust_layers": ["fc"]
+    },
+    "alpha_sweep": {
+      "model": "resnet18_cifar",
+      "alphas": [-0.8, -0.6, -0.4, -0.2, -0.1, 0.0, 0.1, 0.2, 0.4, 0.6, 0.8],
+      "clean_accuracy": 0.9423,
+      "mean_accuracy": 0.9263,
+      "worst_accuracy": 0.8161,
+      "best_accuracy": 0.9423,
+      "aurc": 0.928634375,
+      "positive_negative_gap": -0.0304,
+      "max_accuracy_drop": 0.0057,
+      "max_accuracy_drop_alpha": -0.8
+    },
+    "layer_error_accumulation": {
+      "n_layers": 21,
+      "most_affected_layer": "fc.module",
+      "max_relative_l2": 0.978,
+      "layers_with_zero_error": "all layer1/layer2/layer3 conv layers"
+    }
+  },
+  "test_results": {
+    "total": 26,
+    "passed": 26,
+    "failed": 0,
+    "time_seconds": 4.14,
+    "pytest_version": "9.1.1",
+    "files": {
+      "test_config.py": {"total": 2, "passed": 2, "failed": 0},
+      "test_controller.py": {"total": 3, "passed": 3, "failed": 0},
+      "test_data_split.py": {"total": 2, "passed": 2, "failed": 0},
+      "test_metrics.py": {"total": 3, "passed": 3, "failed": 0},
+      "test_models.py": {"total": 4, "passed": 4, "failed": 0},
+      "test_nonlinearity.py": {"total": 5, "passed": 5, "failed": 0},
+      "test_smoke_pipeline.py": {"total": 1, "passed": 1, "failed": 0},
+      "test_wrapper.py": {"total": 6, "passed": 6, "failed": 0}
+    }
+  },
+  "anomalies": [
+    {
+      "severity": "warning",
+      "description": "SGR NAT best_epoch = 0: model did not improve beyond initialization during fine-tuning"
+    },
+    {
+      "severity": "warning",
+      "description": "Random NAT best_epoch = 0: same pattern as SGR NAT"
+    },
+    {
+      "severity": "info",
+      "description": "SGR NAT checkpoints are 64 bytes larger than baseline/random (NAT config metadata)"
+    },
+    {
+      "severity": "info",
+      "description": "Project path contains CJK characters — may affect some tools but all operations work"
+    }
+  ],
+  "summary": {
+    "total_checkpoints": 6,
+    "total_csv_results": 4,
+    "total_json_results": 10,
+    "total_jsonl_metrics": 3,
+    "total_png_figures": 15,
+    "total_pdf_figures": 15,
+    "total_yaml_configs": 10,
+    "total_py_sources": 60,
+    "cuda_available": true,
+    "dataset_cifar10_complete": true,
+    "train_val_split_verified": true,
+    "archive_md5_verified": true,
+    "all_tests_passing": true,
+    "missing_files": [],
+    "damaged_files": []
+  }
+}

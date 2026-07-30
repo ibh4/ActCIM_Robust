@@ -1,0 +1,31 @@
+{
+  "best_epoch": 0,
+  "best_val_acc": 94.68,
+  "total_epochs": 11,
+  "total_time": 398.9702284000814,
+  "total_time_str": "00:06:38",
+  "config": {
+    "epochs": 15,
+    "label_smoothing": 0.0,
+    "use_amp": true,
+    "grad_clip": 0.0,
+    "patience": 10,
+    "metric_attr": "val_acc",
+    "lambda_cons": 0.5,
+    "clean_ce_weight": 0.25,
+    "cons_temperature": 2.0,
+    "detach_clean": true,
+    "optimizer": {
+      "type": "sgd",
+      "lr": 0.01,
+      "momentum": 0.9,
+      "weight_decay": 0.0005,
+      "nesterov": true
+    },
+    "scheduler": {
+      "type": "cosine",
+      "warmup_epochs": 1
+    }
+  },
+  "seed": 42
+}

@@ -1,0 +1,29 @@
+{
+  "alphas": [
+    -0.8,
+    -0.6,
+    -0.4,
+    -0.2,
+    -0.1,
+    0.0,
+    0.1,
+    0.2,
+    0.4,
+    0.6,
+    0.8
+  ],
+  "clean_baseline_accuracy": null,
+  "methods": {
+    "fixed_nat_seed_3407": {
+      "aurc_all": 0.9386124999999998,
+      "aurc_positive": 0.9376714285714285,
+      "aurc_negative": 0.9385142857142857,
+      "worst_case_accuracy": 0.916,
+      "worst_alpha": 0.8,
+      "mean_perturbed_accuracy": 0.9376599999999999,
+      "alpha0_accuracy": 0.9423,
+      "asymmetry_gap_positive_negative": -0.0022799999999999487
+    }
+  },
+  "aurc_fixed_nat_seed_3407": 0.9386124999999998
+}

@@ -1,0 +1,28 @@
+{
+  "best_epoch": 48,
+  "best_val_acc": 94.84,
+  "total_epochs": 50,
+  "total_time": 1435.8893943000585,
+  "total_time_str": "00:23:55",
+  "config": {
+    "epochs": 50,
+    "label_smoothing": 0.0,
+    "use_amp": true,
+    "grad_clip": 0.0,
+    "patience": 15,
+    "metric_attr": "val_acc",
+    "optimizer": {
+      "type": "sgd",
+      "lr": 0.1,
+      "momentum": 0.9,
+      "weight_decay": 0.0005,
+      "nesterov": true
+    },
+    "scheduler": {
+      "type": "cosine",
+      "warmup_epochs": 3
+    },
+    "batch_size": 128
+  },
+  "seed": 42
+}

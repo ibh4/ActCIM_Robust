@@ -1,0 +1,71 @@
+{
+  "alphas": [
+    -0.8,
+    -0.6,
+    -0.4,
+    -0.2,
+    -0.1,
+    0.0,
+    0.1,
+    0.2,
+    0.4,
+    0.6,
+    0.8
+  ],
+  "clean_baseline_accuracy": 0.9423,
+  "methods": {
+    "clean": {
+      "aurc_all": 0.928340625,
+      "aurc_positive": 0.9128142857142857,
+      "aurc_negative": 0.9398857142857143,
+      "worst_case_accuracy": 0.8125,
+      "worst_alpha": 0.8,
+      "mean_perturbed_accuracy": 0.92431,
+      "alpha0_accuracy": 0.9423,
+      "asymmetry_gap_positive_negative": -0.031380000000000075
+    },
+    "random_nat": {
+      "aurc_all": 0.928071875,
+      "aurc_positive": 0.9116142857142857,
+      "aurc_negative": 0.9404785714285714,
+      "worst_case_accuracy": 0.813,
+      "worst_alpha": 0.8,
+      "mean_perturbed_accuracy": 0.92416,
+      "alpha0_accuracy": 0.9425,
+      "asymmetry_gap_positive_negative": -0.03308,
+      "relative_improvement_vs_clean": -0.019250769394035916,
+      "relative_alpha0_improvement": 0.0002122466305847161
+    },
+    "sgr_nat": {
+      "aurc_all": 0.9289875000000001,
+      "aurc_positive": 0.9141357142857142,
+      "aurc_negative": 0.9399928571428572,
+      "worst_case_accuracy": 0.8206,
+      "worst_alpha": 0.8,
+      "mean_perturbed_accuracy": 0.92524,
+      "alpha0_accuracy": 0.9428,
+      "asymmetry_gap_positive_negative": -0.030039999999999956,
+      "relative_improvement_vs_clean": -0.018104637588878356,
+      "relative_alpha0_improvement": 0.0005306165764617902
+    },
+    "fixed_nat": {
+      "aurc_all": 0.937403125,
+      "aurc_positive": 0.9382285714285713,
+      "aurc_negative": 0.9357428571428571,
+      "worst_case_accuracy": 0.9179,
+      "worst_alpha": 0.8,
+      "mean_perturbed_accuracy": 0.9364699999999999,
+      "alpha0_accuracy": 0.9402,
+      "asymmetry_gap_positive_negative": 0.0006999999999999229,
+      "relative_improvement_vs_clean": -0.006186989281545275,
+      "relative_alpha0_improvement": -0.0022285896211397547
+    }
+  },
+  "aurc_clean": 0.928340625,
+  "aurc_random_nat": 0.928071875,
+  "aurc_sgr_nat": 0.9289875000000001,
+  "aurc_improvement_random_nat_vs_clean": 0.0002687500000000398,
+  "aurc_improvement_sgr_nat_vs_clean": -0.0006468750000000467,
+  "aurc_fixed_nat": 0.937403125,
+  "aurc_improvement_fixed_nat_vs_clean": -0.009062499999999973
+}

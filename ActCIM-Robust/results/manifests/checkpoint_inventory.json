@@ -1,0 +1,74 @@
+[
+  {
+    "method": "baseline",
+    "path": "results/baseline/seed_42/last.pt",
+    "file_size": 89489730,
+    "sha256": "e450cc6be59edf45dcf6b87ed9c3b45d7d7731dfaafaafae75cde6cc77e9b048",
+    "epoch": 49,
+    "validation_accuracy": null,
+    "model_architecture": "resnet18_cifar",
+    "parameter_count": 11183582,
+    "seed": 42,
+    "load_status": "success"
+  },
+  {
+    "method": "baseline",
+    "path": "results/baseline/seed_42/best.pt",
+    "file_size": 89489730,
+    "sha256": "da4a9a01152d9a9e2255ca27bdc98de7b598d874b0454df25ba3e0f426f5140b",
+    "epoch": 48,
+    "validation_accuracy": 94.84,
+    "model_architecture": "resnet18_cifar",
+    "parameter_count": 11183582,
+    "seed": 42,
+    "load_status": "success"
+  },
+  {
+    "method": "sgr_nat",
+    "path": "results/sgr_nat/sgr_nat/seed_42/last.pt",
+    "file_size": 89489794,
+    "sha256": "0691a1a555e385b2e1bb6b02c8939a57ced11d1bebf1d742a5e03c29750dab2f",
+    "epoch": 10,
+    "validation_accuracy": null,
+    "model_architecture": "resnet18_cifar",
+    "parameter_count": 11183582,
+    "seed": 42,
+    "load_status": "success"
+  },
+  {
+    "method": "sgr_nat",
+    "path": "results/sgr_nat/sgr_nat/seed_42/best.pt",
+    "file_size": 89489794,
+    "sha256": "6e29b333d9bf9845e249ae309dbaebdc4a38c5ede7aefed0a8e48ff0ef7425a6",
+    "epoch": 0,
+    "validation_accuracy": 94.68,
+    "model_architecture": "resnet18_cifar",
+    "parameter_count": 11183582,
+    "seed": 42,
+    "load_status": "success"
+  },
+  {
+    "method": "random_nat",
+    "path": "results/random_nat/random_nat/seed_42/last.pt",
+    "file_size": 89489730,
+    "sha256": "49cb043c665e9fe08786cb95f16f47f45c8c8b04e3e3aa956858c98d35a5d925",
+    "epoch": 10,
+    "validation_accuracy": null,
+    "model_architecture": "resnet18_cifar",
+    "parameter_count": 11183582,
+    "seed": 42,
+    "load_status": "success"
+  },
+  {
+    "method": "random_nat",
+    "path": "results/random_nat/random_nat/seed_42/best.pt",
+    "file_size": 89489730,
+    "sha256": "79ce3062e8891bc6b787a69b5442fae37fe5b7d0f9cc60236da007e27773f173",
+    "epoch": 0,
+    "validation_accuracy": 94.82,
+    "model_architecture": "resnet18_cifar",
+    "parameter_count": 11183582,
+    "seed": 42,
+    "load_status": "success"
+  }
+]

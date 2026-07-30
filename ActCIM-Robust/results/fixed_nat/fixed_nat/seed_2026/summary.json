@@ -1,0 +1,27 @@
+{
+  "best_epoch": 9,
+  "best_val_acc": 94.98,
+  "total_epochs": 10,
+  "total_time": 293.6976170002017,
+  "total_time_str": "00:04:53",
+  "config": {
+    "epochs": 10,
+    "label_smoothing": 0.0,
+    "use_amp": true,
+    "grad_clip": 0.0,
+    "patience": 10,
+    "metric_attr": "val_acc",
+    "optimizer": {
+      "type": "sgd",
+      "lr": 0.01,
+      "momentum": 0.9,
+      "weight_decay": 0.0005,
+      "nesterov": true
+    },
+    "scheduler": {
+      "type": "cosine",
+      "warmup_epochs": 1
+    }
+  },
+  "seed": 2026
+}

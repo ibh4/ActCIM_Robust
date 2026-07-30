@@ -1,0 +1,16 @@
+{
+  "fixed_nat_alpha_0": {
+    "alpha": 0.0,
+    "accuracy": 0.9401999711990356,
+    "ece_15_bins": 0.04957938945889473,
+    "mean_confidence": 0.9896218776702881,
+    "elapsed_seconds": 61.1
+  },
+  "fixed_nat_alpha_pos_08": {
+    "alpha": 0.8,
+    "accuracy": 0.9179999828338623,
+    "ece_15_bins": 0.4359753577277064,
+    "mean_confidence": 0.48205113410949707,
+    "elapsed_seconds": 61.2
+  }
+}

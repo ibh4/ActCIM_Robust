@@ -1,0 +1,37 @@
+{
+  "description": "Unified alpha sweep evaluation for Clean, Random-NAT, and SGR-NAT models",
+  "output_dir": "I:\\比赛项目\\存算一体高校挑战赛\\ActCIM-Robust\\results\\post_training",
+  "alphas": [
+    -0.8,
+    -0.6,
+    -0.4,
+    -0.2,
+    -0.1,
+    0.0,
+    0.1,
+    0.2,
+    0.4,
+    0.6,
+    0.8
+  ],
+  "methods": [
+    "clean",
+    "random_nat",
+    "sgr_nat"
+  ],
+  "files": {
+    "per_method_csv": {
+      "clean": "clean_alpha_sweep.csv",
+      "random_nat": "random_nat_alpha_sweep.csv",
+      "sgr_nat": "sgr_nat_alpha_sweep.csv"
+    },
+    "combined_csv": "all_methods_alpha_sweep.csv",
+    "combined_json": "all_methods_alpha_sweep.json"
+  },
+  "aggregate_summary": {
+    "aurc_all": null,
+    "aurc_positive": null,
+    "aurc_negative": null,
+    "clean_baseline_acc": 0.9423
+  }
+}

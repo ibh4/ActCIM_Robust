@@ -1,0 +1,5 @@
+method,alpha0_accuracy,worst_case_accuracy,worst_alpha,aurc_all,aurc_positive,aurc_negative,mean_perturbed_accuracy,asymmetry_gap_positive_negative,improvement_over_clean_pp
+clean,0.9423,0.8125,0.8,0.928341,0.912814,0.939886,0.92431,-0.03138,0.0
+random_nat,0.9425,0.8130,0.8,0.928072,0.911614,0.940479,0.92416,-0.03308,+0.05
+sgr_nat,0.9428,0.8206,0.8,0.928988,0.914136,0.939993,0.92524,-0.03004,+0.81
+fixed_nat,0.9402,0.9179,0.8,0.937403,0.938229,0.935743,0.93647,+0.00070,+10.54

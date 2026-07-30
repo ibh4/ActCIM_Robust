@@ -1,0 +1,12 @@
+{
+  "python_version": "3.12.5 (tags/v3.12.5:ff3bc82, Aug  6 2024, 20:45:27) [MSC v.1940 64 bit (AMD64)]",
+  "torch_version": "2.5.1+cu121",
+  "hostname": "WIN-2SJ7ERJE706",
+  "os": "Windows 11",
+  "timestamp": "2026-07-29T16:10:57.037699",
+  "cuda_version": "12.1",
+  "gpu_name": "NVIDIA GeForce RTX 4060",
+  "gpu_memory": "8.00 GB",
+  "cpu_name": "Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz",
+  "total_ram": "31.90 GB"
+}

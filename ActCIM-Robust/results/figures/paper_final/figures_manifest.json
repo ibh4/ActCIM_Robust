@@ -1,0 +1,123 @@
+[
+  {
+    "number": 1,
+    "name": "fig01_pipeline",
+    "title": "ActCIM-Robust 方法总体流程图",
+    "png": "results/figures/paper_final/fig01_pipeline.png",
+    "pdf": "results/figures/paper_final/fig01_pipeline.pdf",
+    "sources": [
+      "src/actcim_robust/nonlinearity/*",
+      "results/post_training/fixed_nat_comparison.json",
+      "scripts/paper/verify_injection_scope.py"
+    ],
+    "caption": "ActCIM-Robust 总体流程：先在 CIFAR-10 上训练 ResNet-18 基线，再通过输入端非线性注入框架 y=W·f_α(x) 模拟存算一体阵列的激活传输非线性（f_α 采用逐张量动态最大值归一化；受控制器命名碰撞影响，实际生效层为深层 4 层）；随后以 Fixed/Random/SGR 三种 NAT 策略微调，并在全测试集上执行 11 点 α-Sweep，统一计算 Worst-Case Accuracy、AURC、ECE 与方向不对称指标。该图支持的结论：Fixed-NAT(+0.4) 在保持 Clean 94.02% 的同时将最差准确率提升至 91.79%。"
+  },
+  {
+    "number": 2,
+    "name": "fig02_nonlinearity",
+    "title": "非线性函数及正负 Alpha 响应",
+    "png": "results/figures/paper_final/fig02_nonlinearity.png",
+    "pdf": "results/figures/paper_final/fig02_nonlinearity.pdf",
+    "sources": [
+      "src/actcim_robust/nonlinearity/function.py"
+    ],
+    "caption": "非线性传输函数 f_α(x)=m·[α(x/m)^3+(1-α)(x/m)]（m=max|x| 逐张量动态归一化，按源码 function.py 绘制）。(a) 不同 α 下的输入-输出曲线；(b) 增益 f_α(x)/x：α>0 时小幅值激活的增益低于 1（压缩、趋向三次饱和），α<0 时增益高于 1（扩张）。该图支持的结论：正 α 压缩会系统性削弱中小幅值激活的信息，是模型对正 α 更敏感的机理来源。"
+  },
+  {
+    "number": 3,
+    "name": "fig03_alpha_sweep",
+    "title": "四种方法 Accuracy-Alpha 曲线",
+    "png": "results/figures/paper_final/fig03_alpha_sweep.png",
+    "pdf": "results/figures/paper_final/fig03_alpha_sweep.pdf",
+    "sources": [
+      "results/post_training/all_methods_alpha_sweep.csv",
+      "results/post_training/fixed_nat_alpha_sweep.csv"
+    ],
+    "caption": "四种方法在 α∈[-0.8,+0.8] 共 11 个点上的 Top-1 测试准确率（10 000 张全测试集，seed 42 checkpoint，均已复评核验）。Clean/Random-NAT/SGR-NAT 三条曲线几乎重合，在 α=+0.8 处分别跌至 81.25%/81.30%/82.06%；Fixed-NAT(+0.4) 全程平坦，最差点 91.79%（α=+0.8），α=0 处 94.02%。该图支持的结论：Fixed-NAT 显著抬升最差准确率（+10.54 pp），且 SGR-NAT 与 Random-NAT 表现接近。"
+  },
+  {
+    "number": 4,
+    "name": "fig04_layer_sensitivity",
+    "title": "层敏感性排序图",
+    "png": "results/figures/paper_final/fig04_layer_sensitivity.png",
+    "pdf": "results/figures/paper_final/fig04_layer_sensitivity.pdf",
+    "sources": [
+      "results/analysis/layer_sensitivity_ranked.csv",
+      "scripts/paper/verify_injection_scope.py"
+    ],
+    "caption": "单层注入 α=±0.4 时相对无注入的准确率下降（基线模型，固定 128 样本批，精度分辨率 1/128~0.78 pp）。由于控制器以局部名称索引 wrapper，21 条登记名实际映射到 4 个唯一生效层，因此各名称组内数值重复，最大差异仅 ±0.78 pp。该图如实呈现原始 CSV，支持的结论是：在该退化口径与样本量下，单层注入的敏感性差异微弱，不足以给出可靠的逐层排序（详见审计说明），层间差异需由图5的逐层误差累积佐证。"
+  },
+  {
+    "number": 5,
+    "name": "fig05_error_accumulation",
+    "title": "误差逐层累积图",
+    "png": "results/figures/paper_final/fig05_error_accumulation.png",
+    "pdf": "results/figures/paper_final/fig05_error_accumulation.pdf",
+    "sources": [
+      "results/analysis/layer_error_accumulation.csv",
+      "scripts/paper/verify_injection_scope.py"
+    ],
+    "caption": "全局注入 α=±0.4 时各层输出激活相对干净前向的相对 L2 误差（基线模型，128 样本批，activation hook 逐层对比）。误差自 layer4.0.downsample.0 起才非零并沿深度快速放大，至 fc 输入处 α=-0.4 达 0.978、α=+0.4 达 0.605——与实证核验的“实际仅 4 个深层生效”完全一致。该图支持的结论：非线性误差在深层被逐级放大，且负 α 在激活幅值上造成的相对扰动大于正 α，但正 α 因压缩语义信息而导致更大的准确率损失（对照图3、图6）。"
+  },
+  {
+    "number": 6,
+    "name": "fig06_worst_accuracy",
+    "title": "Worst Accuracy 对比图",
+    "png": "results/figures/paper_final/fig06_worst_accuracy.png",
+    "pdf": "results/figures/paper_final/fig06_worst_accuracy.pdf",
+    "sources": [
+      "results/post_training/fixed_nat_comparison.json"
+    ],
+    "caption": "四种方法在 11 点 α-Sweep 上的最差准确率（均出现在 α=+0.8）。Clean 81.25%、Random-NAT 81.30%、SGR-NAT 82.06%、Fixed-NAT(+0.4) 91.79%。数值取自 fixed_nat_comparison.json 并经 checkpoint 复评核验（单一 seed 42 训练协议，非多种子统计量）。该图支持的结论：Fixed-NAT 将最差准确率提高 10.54 pp，是四种方法中唯一实质改善最坏情形的方案。"
+  },
+  {
+    "number": 7,
+    "name": "fig07_tradeoff",
+    "title": "Clean Accuracy-AURC 权衡图",
+    "png": "results/figures/paper_final/fig07_tradeoff.png",
+    "pdf": "results/figures/paper_final/fig07_tradeoff.pdf",
+    "sources": [
+      "results/post_training/fixed_nat_comparison.json"
+    ],
+    "caption": "各方法 α=0 准确率（横轴）与 AURC（纵轴，Accuracy-α 曲线在 [-0.8,+0.8] 上的梯形积分除以区间宽度 1.6）。Fixed-NAT 以 0.21 pp 的 Clean 代价（94.23%→94.02%）换取 AURC 从 0.9283 提升至 0.9374；Random-NAT/SGR-NAT 几乎停留在基线位置。该图支持的结论：Fixed-NAT 的鲁棒性收益远大于其微小的干净精度损失，位于权衡前沿。"
+  },
+  {
+    "number": 8,
+    "name": "fig08_ece_alpha",
+    "title": "ECE-Alpha 曲线",
+    "png": "results/figures/paper_final/fig08_ece_alpha.png",
+    "pdf": "results/figures/paper_final/fig08_ece_alpha.pdf",
+    "sources": [
+      "results/post_training/all_methods_alpha_sweep.csv",
+      "results/post_training/fixed_nat_alpha_sweep.csv"
+    ],
+    "caption": "四种方法在 α-Sweep 各点的 15-bin 期望校准误差（ECE = 各置信度区间 |准确率-平均置信度| 的样本加权和）。负 α 侧模型保持约 0.99 的平均置信度（轻度过自信，ECE<0.07）；α=+0.8 时 clean/random/sgr 的平均置信度崩溃至约 0.25，而准确率仍有 81-82%，形成严重欠自信（ECE 0.55-0.56）；Fixed-NAT 平均置信度 0.48、准确率 91.8%，ECE 降至 0.436（对照图9）。该图支持的结论：强正非线性引起的失准是置信度崩溃型欠自信，Fixed-NAT 显著减轻但并未完全消除该失准。"
+  },
+  {
+    "number": 9,
+    "name": "fig09_reliability",
+    "title": "可靠性图（ECE 校准分析）",
+    "png": "results/figures/paper_final/fig09_reliability.png",
+    "pdf": "results/figures/paper_final/fig09_reliability.pdf",
+    "sources": [
+      "results/post_training/calibration/clean_alpha_0_bins.csv",
+      "results/post_training/calibration/clean_alpha_pos_08_bins.csv",
+      "results/post_training/calibration/fixed_nat_alpha_pos_08_bins.csv",
+      "scripts/paper/compute_fixed_nat_calibration.py"
+    ],
+    "caption": "15 等宽置信度区间的可靠性图：柱高为区间内经验准确率，红虚线为理想校准。(a) Clean 基线在 α=0 时接近对角线（ECE=0.033，略过自信）；(b) α=+0.8 时置信度整体坍缩——38.07% 的样本落入置信度<0.20 的两个区间，各区间经验准确率普遍高于置信度（柱体位于对角线上方，严重欠自信，ECE=0.560，平均置信度仅 0.252）；(c) Fixed-NAT 在 α=+0.8 时仍偏欠自信但明显更贴近对角线（ECE=0.436，平均置信度回升至 0.482）。(c) 面板由 seed 42 checkpoint 按同一 15-bin 协议补算（仅评估，脚本见来源）。该图支持的结论：正 α 压缩引发的是置信度崩溃型欠自信而非过自信，Fixed-NAT 显著缓解该失准并将准确率提升至 91.8%。"
+  },
+  {
+    "number": 10,
+    "name": "fig10_multiseed",
+    "title": "Fixed-NAT 多训练种子一致性（描述性检查）",
+    "png": "results/figures/paper_final/fig10_multiseed.png",
+    "pdf": "results/figures/paper_final/fig10_multiseed.pdf",
+    "sources": [
+      "results/post_training/fixed_nat_alpha_sweep.csv",
+      "results/post_training/multi_seed/fixed_nat_seed_2026_alpha_sweep.csv",
+      "results/post_training/multi_seed/fixed_nat_seed_3407_alpha_sweep.csv"
+    ],
+    "caption": "Fixed-NAT 三个训练种子（42/2026/3407）各自 checkpoint 的完整 11 点 α-Sweep（评估协议与种子一致，均为全测试集）。α=+0.8 处最差点分别为 91.79%/91.36%/91.60%（极差 0.43 pp），α=0 处为 94.02%/94.29%/94.23%。仅 n=3 且对比方法（Random/SGR-NAT）只有单种子，因此本图仅作描述性一致性检查，不构成统计显著性证据。该图支持的结论：Fixed-NAT 的鲁棒性增益在三个训练种子下方向与量级一致。"
+  }
+]

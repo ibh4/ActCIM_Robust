@@ -1,0 +1,7 @@
+method,path,file_size,sha256,epoch,validation_accuracy,model_architecture,parameter_count,seed,load_status
+baseline,results/baseline/seed_42/last.pt,89489730,e450cc6be59edf45dcf6b87ed9c3b45d7d7731dfaafaafae75cde6cc77e9b048,49,,resnet18_cifar,11183582,42,success
+baseline,results/baseline/seed_42/best.pt,89489730,da4a9a01152d9a9e2255ca27bdc98de7b598d874b0454df25ba3e0f426f5140b,48,94.84,resnet18_cifar,11183582,42,success
+sgr_nat,results/sgr_nat/sgr_nat/seed_42/last.pt,89489794,0691a1a555e385b2e1bb6b02c8939a57ced11d1bebf1d742a5e03c29750dab2f,10,,resnet18_cifar,11183582,42,success
+sgr_nat,results/sgr_nat/sgr_nat/seed_42/best.pt,89489794,6e29b333d9bf9845e249ae309dbaebdc4a38c5ede7aefed0a8e48ff0ef7425a6,0,94.68,resnet18_cifar,11183582,42,success
+random_nat,results/random_nat/random_nat/seed_42/last.pt,89489730,49cb043c665e9fe08786cb95f16f47f45c8c8b04e3e3aa956858c98d35a5d925,10,,resnet18_cifar,11183582,42,success
+random_nat,results/random_nat/random_nat/seed_42/best.pt,89489730,79ce3062e8891bc6b787a69b5442fae37fe5b7d0f9cc60236da007e27773f173,0,94.82,resnet18_cifar,11183582,42,success

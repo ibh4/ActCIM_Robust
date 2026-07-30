@@ -13,8 +13,8 @@ env/
 *.tar.gz
 data/raw/
 data/processed/
-data/splits/
-results/
+# 注：results/ 下的图表(PNG/PDF)、分析CSV/JSON、manifest 与各 run 的
+# metrics/summary 元数据均入库以保证可审计与可复现；大体积 checkpoint 由上方 *.pt 规则排除。
 *.log
 .DS_Store
 Thumbs.db
